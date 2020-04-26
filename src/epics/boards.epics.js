@@ -12,6 +12,12 @@ import {
   fetchBoardPricesSuccessAction,
   fetchBoardPricesErrorAction,
   fetchBoardPricesAction,
+  SUBMIT_BUY_PRICE,
+  submitBuyPriceSuccessAction,
+  submitBuyPriceErrorAction,
+  SUBMIT_SELL_PRICE,
+  submitSellPriceSuccessAction,
+  submitSellPriceErrorAction,
 } from "actions/boards.actions";
 import { of } from "rxjs";
 import { ofType } from "redux-observable";
@@ -94,6 +100,52 @@ export const fetchBoardPricesEpic = (action$, _, { ajax }) =>
       }).pipe(
         map(({ response }) => fetchBoardPricesSuccessAction(response)),
         catchError((err) => of(fetchBoardPricesErrorAction(err)))
+      );
+    })
+  );
+
+export const submitBuyPriceEpic = (action$, _, { ajax }) =>
+  action$.pipe(
+    ofType(SUBMIT_BUY_PRICE),
+    switchMap(({ payload }) => {
+      return ajax({
+        url: `https://localhost:44383/boards/${payload.boardId}/users/${payload.userId}/prices/buy`,
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.token}`,
+          "Content-Type": "application/json",
+        },
+        body: {
+          date: payload.date,
+          price: payload.price,
+        },
+      }).pipe(
+        map(({ response }) => submitBuyPriceSuccessAction(response)),
+        catchError((err) => of(submitBuyPriceErrorAction(err)))
+      );
+    })
+  );
+
+export const submitSellPriceEpic = (action$, _, { ajax }) =>
+  action$.pipe(
+    ofType(SUBMIT_SELL_PRICE),
+    switchMap(({ payload }) => {
+      return ajax({
+        url: `https://localhost:44383/boards/${payload.boardId}/users/${payload.userId}/prices/sell`,
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.token}`,
+          "Content-Type": "application/json",
+        },
+        body: {
+          date: payload.date,
+          price: payload.price,
+          day: payload.day,
+          period: payload.period,
+        },
+      }).pipe(
+        map(({ response }) => submitBuyPriceSuccessAction(response)),
+        catchError((err) => of(submitBuyPriceErrorAction(err)))
       );
     })
   );

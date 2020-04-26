@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import get from "lodash/get";
+import { getPrice, days, periods } from "utils/prices";
+import styled from "styled-components";
+import { submitBuyPriceAction, submitSellPriceAction } from "actions";
 
-const Board = ({ board }) => {
+const BellInput = styled.input`
+  width: 75px;
+`;
+
+const Board = ({ board, submitBuyPrice, submitSellPrice }) => {
   if (!board) {
     return null;
   }
@@ -44,6 +51,51 @@ const Board = ({ board }) => {
               <th>Sat PM</th>
             </tr>
           </thead>
+          <tbody>
+            {userPrices.map((u) => {
+              const submitOptions = {
+                boardId: board.id,
+                userId: u.boardUserId,
+                date: board.prices.weekDate,
+              };
+
+              return (
+                <tr>
+                  <td>{u.name}</td>
+                  <td>
+                    <BellInput
+                      type="text"
+                      defaultValue={u.buyPrice}
+                      onBlur={(e) =>
+                        submitBuyPrice({
+                          ...submitOptions,
+                          price: e.target.value,
+                        })
+                      }
+                    />
+                  </td>
+                  {days.map((day) => {
+                    return periods.map((period) => (
+                      <td>
+                        <BellInput
+                          type="text"
+                          defaultValue={getPrice(u.prices, day, period)}
+                          onBlur={(e) =>
+                            submitSellPrice({
+                              ...submitOptions,
+                              price: e.target.value,
+                              day,
+                              period,
+                            })
+                          }
+                        />
+                      </td>
+                    ));
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
         </table>
       )}
     </div>
@@ -54,4 +106,9 @@ const mapStateToProps = (state) => ({
   board: state.boards.board,
 });
 
-export default connect(mapStateToProps)(Board);
+const mapDispatchToProps = {
+  submitBuyPrice: submitBuyPriceAction,
+  submitSellPrice: submitSellPriceAction,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Board);

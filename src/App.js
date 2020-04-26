@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "./components/Header";
 import Content from "./components/Content";
-import styled from "styled-components/macro";
+import styled from "styled-components";
 import "App.css";
 
 const Site = styled.div`
@@ -9,7 +9,7 @@ const Site = styled.div`
   justify-content: space-around;
 
   > div {
-    width: 50%;
+    width: 75%;
   }
 `;
 
