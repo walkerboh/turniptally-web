@@ -3,7 +3,8 @@ import {
   LOGIN_ERROR,
   REGISTER_SUCCESS,
   REGISTER_ERROR,
-} from "src/actions/user.actions";
+  LOGOUT,
+} from "actions/users.actions";
 
 const user = JSON.parse(localStorage.getItem("user"));
 
@@ -41,6 +42,12 @@ export const users = (state = initialState, action) => {
           registerSuccess: false,
           registrationError: action.payload.message,
         },
+      };
+    }
+    case LOGOUT: {
+      return {
+        ...state,
+        user: {},
       };
     }
     default:

@@ -1,6 +1,6 @@
 import { ofType } from "redux-observable";
-import { of } from "rxjs";
-import { switchMap, map, withLatestFrom, catchError } from "rxjs/operators";
+import { of, EMPTY } from "rxjs";
+import { switchMap, map, catchError, tap, switchMapTo } from "rxjs/operators";
 import {
   LOGIN,
   loginSuccessAction,
@@ -8,36 +8,52 @@ import {
   REGISTER,
   registerSuccessAction,
   registerErrorAction,
-} from "src/epics/users.epic";
+  LOGOUT,
+} from "actions/users.actions";
 
 export const loginEpic = (action$, _, { ajax }) =>
   action$.pipe(
     ofType(LOGIN),
-    ajax({
-      url: "https://localhost:44383/users/register",
-      method: "POST",
-      body: action$.payload,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).pipe(
-      map(({ response }) => loginSuccessAction(response)),
-      catchError((err) => of(loginErrorAction(err)))
-    )
+    switchMap(({ payload }) => {
+      return ajax({
+        url: "https://localhost:44383/users/authenticate",
+        method: "POST",
+        body: payload,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).pipe(
+        map(({ response }) => {
+          localStorage.setItem("user", JSON.stringify(response));
+          localStorage.setItem("token", response.token);
+          return loginSuccessAction(response);
+        }),
+        catchError((err) => of(loginErrorAction(err)))
+      );
+    })
   );
 
 export const registerEpic = (action$, _, { ajax }) =>
   action$.pipe(
     ofType(REGISTER),
-    ajax({
-      url: "https://localhost:44383/users/register",
-      method: "POST",
-      body: action$.payload,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).pipe(
-      map(({ response }) => registerSuccessAction(response)),
-      catchError((err) => of(registerErrorAction(err)))
-    )
+    switchMap(({ payload }) => {
+      return ajax({
+        url: "https://localhost:44383/users/register",
+        method: "POST",
+        body: payload,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).pipe(
+        map(({ response }) => registerSuccessAction(response)),
+        catchError((err) => of(registerErrorAction(err)))
+      );
+    })
+  );
+
+export const logoutEpic = (action$) =>
+  action$.pipe(
+    ofType(LOGOUT),
+    tap(() => localStorage.removeItem("user")),
+    switchMapTo(EMPTY)
   );

@@ -4,19 +4,19 @@ import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
-import { createStore, applyMiddleware, compose } from "redux";
+import { createStore, applyMiddleware, compose, combineReducers } from "redux";
 import { Provider } from "react-redux";
 import { combineEpics, createEpicMiddleware } from "redux-observable";
 import { ajax } from "rxjs/ajax";
-import * as reducers from "src/reducers";
-import * as epics from "src/epics";
+import * as reducers from "reducers";
+import * as epics from "epics";
 
 const rootEpic = combineEpics(...Object.values(epics));
 const epicMiddleware = createEpicMiddleware({ dependencies: { ajax } });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
-  reducers,
+  combineReducers({ ...reducers }),
   composeEnhancers(applyMiddleware(epicMiddleware))
 );
 
