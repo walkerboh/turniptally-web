@@ -8,6 +8,10 @@ export const REGISTER_ERROR = "REGISTER_ERROR";
 
 export const LOGOUT = "LOGOUT";
 
+export const FETCH_TIMEZONES = "FETCH_TIMEZONES";
+export const FETCH_TIMEZONES_SUCCESS = "FETCH_TIMEZONES_SUCCESS";
+export const FETCH_TIMEZONES_ERROR = "FETCH_TIMEZONES_ERROR";
+
 export const loginAction = (payload) => ({
   type: LOGIN,
   payload,
@@ -40,4 +44,17 @@ export const registerErrorAction = (payload) => ({
 
 export const logoutAction = () => ({
   type: LOGOUT,
+});
+
+export const fetchTimezonesAction = () => ({
+  type: FETCH_TIMEZONES,
+});
+
+export const fetchTimezonesSuccessAction = (payload) => ({
+  type: FETCH_TIMEZONES_SUCCESS,
+  payload,
+});
+
+export const fetchTimezonesErrorAction = () => ({
+  type: FETCH_TIMEZONES_ERROR,
 });

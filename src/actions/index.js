@@ -1,2 +1,3 @@
 export * from "./users.actions";
-export * from "./boards.actions";
+export * from "./boardData.actions";
+export * from "./boardManagement.actions";

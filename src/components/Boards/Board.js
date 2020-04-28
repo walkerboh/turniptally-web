@@ -7,7 +7,7 @@ import {
   submitBuyPriceAction,
   submitSellPriceAction,
   fetchBoardDetailsAction,
-} from "actions/boards.actions";
+} from "actions/boardData.actions";
 import { withRouter } from "react-router-dom";
 
 const BellInput = styled.input`

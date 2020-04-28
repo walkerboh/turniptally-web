@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { fetchBoardListAction } from "actions/boards.actions";
+import { fetchBoardListAction } from "actions/boardData.actions";
 import { withRouter } from "react-router-dom";
+import CreateBoardModal from "./CreateBoardModal";
 
 const BoardSelector = ({ user, boardList, fetchBoardList, board, history }) => {
   useEffect(() => {
@@ -40,6 +41,7 @@ const BoardSelector = ({ user, boardList, fetchBoardList, board, history }) => {
           </option>
         ))}
       </select>
+      <CreateBoardModal />
     </div>
   );
 };

@@ -18,7 +18,7 @@ import {
   SUBMIT_SELL_PRICE,
   submitSellPriceSuccessAction,
   submitSellPriceErrorAction,
-} from "actions/boards.actions";
+} from "actions/boardData.actions";
 import { of } from "rxjs";
 import { ofType } from "redux-observable";
 import { switchMap, map, catchError, mergeMap } from "rxjs/operators";
@@ -144,8 +144,8 @@ export const submitSellPriceEpic = (action$, _, { ajax }) =>
           period: payload.period,
         },
       }).pipe(
-        map(({ response }) => submitBuyPriceSuccessAction(response)),
-        catchError((err) => of(submitBuyPriceErrorAction(err)))
+        map(({ response }) => submitSellPriceSuccessAction(response)),
+        catchError((err) => of(submitSellPriceErrorAction(err)))
       );
     })
   );

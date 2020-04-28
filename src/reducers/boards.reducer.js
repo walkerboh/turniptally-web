@@ -11,7 +11,13 @@ import {
   FETCH_BOARD_PRICES,
   FETCH_BOARD_PRICES_SUCCESS,
   FETCH_BOARD_PRICES_ERROR,
-} from "actions/boards.actions";
+} from "actions/boardData.actions";
+import {
+  CREATE_BOARD,
+  CREATE_BOARD_SUCCESS,
+  CREATE_BOARD_ERROR,
+  CREATE_BOARD_RESET,
+} from "actions/boardManagement.actions";
 
 const initialState = {
   boardList: null,
@@ -117,6 +123,40 @@ export const boards = (state = initialState, action) => {
             error: action.payload,
           },
         },
+      };
+    }
+    case CREATE_BOARD: {
+      return {
+        ...state,
+        create: {
+          inProgress: true,
+          success: false,
+          error: null,
+        },
+      };
+    }
+    case CREATE_BOARD_SUCCESS: {
+      return {
+        ...state,
+        create: {
+          inProgress: false,
+          success: true,
+        },
+      };
+    }
+    case CREATE_BOARD_ERROR: {
+      return {
+        ...state,
+        create: {
+          inProgress: false,
+          error: action.payload,
+        },
+      };
+    }
+    case CREATE_BOARD_RESET: {
+      return {
+        ...state,
+        create: null,
       };
     }
     default: {

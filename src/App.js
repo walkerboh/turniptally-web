@@ -5,6 +5,7 @@ import Board from "./components/Boards/Board";
 import styled from "styled-components";
 import "App.css";
 import { withRouter, Switch, Route } from "react-router-dom";
+import { connect } from "react-redux";
 
 const Site = styled.div`
   display: flex;
@@ -15,20 +16,28 @@ const Site = styled.div`
   }
 `;
 
-const App = () => {
+const App = ({ user }) => {
   return (
     <Site>
       <div>
         <Header />
-        <BoardSelector />
-        <Switch>
-          <Route path="/:boardName">
-            <Board />
-          </Route>
-        </Switch>
+        {user.email && (
+          <>
+            <BoardSelector />
+            <Switch>
+              <Route path="/:boardName">
+                <Board />
+              </Route>
+            </Switch>
+          </>
+        )}
       </div>
     </Site>
   );
 };
 
-export default withRouter(App);
+const mapStateToProps = (state) => ({
+  user: state.users.user,
+});
+
+export default withRouter(connect(mapStateToProps)(App));

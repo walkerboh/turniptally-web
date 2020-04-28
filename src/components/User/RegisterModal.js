@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 import Popup from "reactjs-popup";
-import { registerAction } from "actions/users.actions";
+import { registerAction, fetchTimezonesAction } from "actions/users.actions";
 import { connect } from "react-redux";
 
-const RegisterModel = ({ register }) => {
+const RegisterModel = ({ timezones, register, fetchTimezones }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [timezoneId, setTimezone] = useState("");
+
+  if (!timezones.length) {
+    fetchTimezones();
+  }
 
   return (
     <Popup modal trigger={<button>Register</button>} lockScroll>
@@ -27,10 +32,26 @@ const RegisterModel = ({ register }) => {
               value={password}
             />
           </div>
+          <div>
+            Timezone
+            <select
+              value={timezoneId}
+              onChange={(e) => setTimezone(e.target.value)}
+            >
+              <option value="">Please select a timezone...</option>
+              {timezones.map((t) => (
+                <option value={t.id}>{t.name}</option>
+              ))}
+            </select>
+            <div>
+              If you do not select a timezone, the site will treat you as if you
+              are in UTC.
+            </div>
+          </div>
           <input
             type="submit"
             value="Register"
-            onClick={() => register({ email, password })}
+            onClick={() => register({ email, password, timezoneId })}
           />
           <button onClick={close}>Close</button>
         </div>
@@ -39,8 +60,13 @@ const RegisterModel = ({ register }) => {
   );
 };
 
+const mapStateToProps = (state) => ({
+  timezones: state.users.timezones,
+});
+
 const mapDispatchToProps = {
   register: registerAction,
+  fetchTimezones: fetchTimezonesAction,
 };
 
-export default connect(null, mapDispatchToProps)(RegisterModel);
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterModel);

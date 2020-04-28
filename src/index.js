@@ -5,7 +5,12 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
 import { createBrowserHistory } from "history";
-import { BrowserRouter } from "react-router-dom";
+import {
+  connectRouter,
+  routerMiddleware,
+  ConnectedRouter,
+  push,
+} from "connected-react-router";
 
 import { createStore, applyMiddleware, compose, combineReducers } from "redux";
 import { Provider } from "react-redux";
@@ -17,25 +22,26 @@ import * as epics from "epics";
 const history = createBrowserHistory();
 
 const rootEpic = combineEpics(...Object.values(epics));
-const epicMiddleware = createEpicMiddleware({ dependencies: { ajax } });
+const epicMiddleware = createEpicMiddleware({ dependencies: { ajax, push } });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
   combineReducers({
+    router: connectRouter(history),
     ...reducers,
   }),
-  composeEnhancers(applyMiddleware(epicMiddleware))
+  composeEnhancers(applyMiddleware(routerMiddleware(history), epicMiddleware))
 );
 
 epicMiddleware.run(rootEpic);
 
 ReactDOM.render(
   <Provider store={store}>
-    <BrowserRouter history={history}>
+    <ConnectedRouter history={history}>
       <React.StrictMode>
         <App />
       </React.StrictMode>
-    </BrowserRouter>
+    </ConnectedRouter>
   </Provider>,
   document.getElementById("root")
 );
