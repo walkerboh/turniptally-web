@@ -1,8 +1,10 @@
 import React from "react";
 import Header from "./components/Header";
-import Content from "./components/Content";
+import BoardSelector from "./components/Boards/BoardSelector";
+import Board from "./components/Boards/Board";
 import styled from "styled-components";
 import "App.css";
+import { withRouter, Switch, Route } from "react-router-dom";
 
 const Site = styled.div`
   display: flex;
@@ -18,10 +20,15 @@ const App = () => {
     <Site>
       <div>
         <Header />
-        <Content />
+        <BoardSelector />
+        <Switch>
+          <Route path="/:boardName">
+            <Board />
+          </Route>
+        </Switch>
       </div>
     </Site>
   );
 };
 
-export default App;
+export default withRouter(App);

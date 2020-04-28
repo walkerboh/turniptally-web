@@ -1,11 +1,9 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import {
-  fetchBoardListAction,
-  fetchBoardDetailsAction,
-} from "actions/boards.actions";
+import { fetchBoardListAction } from "actions/boards.actions";
+import { withRouter } from "react-router-dom";
 
-const BoardSelector = ({ user, boardList, fetchBoardList, fetchBoard }) => {
+const BoardSelector = ({ user, boardList, fetchBoardList, board, history }) => {
   useEffect(() => {
     fetchBoardList();
   }, [user, fetchBoardList]);
@@ -18,15 +16,27 @@ const BoardSelector = ({ user, boardList, fetchBoardList, fetchBoard }) => {
     return <div>{boardList.error.message}</div>;
   }
 
+  if (!boardList.length) {
+    return (
+      <div>
+        You need to join a board before you can enter data. Either create your
+        own or get a link from someone with a board.
+      </div>
+    );
+  }
+
   return (
     <div>
-      <select onChange={(e) => fetchBoard({ id: e.target.value })}>
-        <option disabled selected>
+      <select
+        onChange={(e) => history.push(`/${e.target.value}`)}
+        value={board ? board.urlName : ""}
+      >
+        <option disabled value="">
           Please select a board...
         </option>
-        {boardList.map((board) => (
-          <option key={board.id} value={board.id}>
-            {board.displayName}
+        {boardList.map((b) => (
+          <option key={b.id} value={b.urlName}>
+            {b.displayName}
           </option>
         ))}
       </select>
@@ -37,11 +47,13 @@ const BoardSelector = ({ user, boardList, fetchBoardList, fetchBoard }) => {
 const mapStateToProps = (state) => ({
   user: state.users.user,
   boardList: state.boards.boardList,
+  board: state.boards.board,
 });
 
 const mapDispatchToProps = {
   fetchBoardList: fetchBoardListAction,
-  fetchBoard: fetchBoardDetailsAction,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(BoardSelector);
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(BoardSelector)
+);

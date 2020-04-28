@@ -1,15 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import get from "lodash/get";
 import { getPrice, days, periods } from "utils/prices";
 import styled from "styled-components";
-import { submitBuyPriceAction, submitSellPriceAction } from "actions";
+import {
+  submitBuyPriceAction,
+  submitSellPriceAction,
+  fetchBoardDetailsAction,
+} from "actions/boards.actions";
+import { withRouter } from "react-router-dom";
 
 const BellInput = styled.input`
   width: 75px;
 `;
 
-const Board = ({ board, submitBuyPrice, submitSellPrice }) => {
+const Board = ({
+  board,
+  submitBuyPrice,
+  submitSellPrice,
+  fetchBoard,
+  match,
+}) => {
+  useEffect(() => {
+    fetchBoard({ name: match.params.boardName });
+  }, [fetchBoard, match.params.boardName]);
+
   if (!board) {
     return null;
   }
@@ -60,7 +75,7 @@ const Board = ({ board, submitBuyPrice, submitSellPrice }) => {
               };
 
               return (
-                <tr>
+                <tr key={u.boardUserId}>
                   <td>{u.name}</td>
                   <td>
                     <BellInput
@@ -107,8 +122,9 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
+  fetchBoard: fetchBoardDetailsAction,
   submitBuyPrice: submitBuyPriceAction,
   submitSellPrice: submitSellPriceAction,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Board);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Board));
