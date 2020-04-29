@@ -70,7 +70,7 @@ export const fetchTimezonesEpic = (action$, _, { ajax }) =>
         method: "GET",
       }).pipe(
         map(({ response }) => fetchTimezonesSuccessAction(response)),
-        catchError((err) => fetchTimezonesErrorAction(err))
+        catchError((err) => of(fetchTimezonesErrorAction(err)))
       );
     })
   );

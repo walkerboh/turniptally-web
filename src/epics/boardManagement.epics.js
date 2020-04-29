@@ -5,7 +5,7 @@ import {
 } from "actions/boardManagement.actions";
 import { of } from "rxjs";
 import { ofType } from "redux-observable";
-import { switchMap, map, catchError, mergeMap } from "rxjs/operators";
+import { switchMap, catchError, mergeMap } from "rxjs/operators";
 
 export const createBoardEpic = (action$, _, { ajax, push }) =>
   action$.pipe(
