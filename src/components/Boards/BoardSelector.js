@@ -19,7 +19,7 @@ const BoardSelector = ({ user, boardList, fetchBoardList, board, history }) => {
 
   if (!boardList.length) {
     return (
-      <div>
+      <div style={{ marginBottom: "10px" }}>
         You need to join a board before you can enter data. Either create your
         own or get a link from someone with a board.
       </div>
