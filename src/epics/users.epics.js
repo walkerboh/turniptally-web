@@ -14,12 +14,12 @@ import {
   fetchTimezonesErrorAction,
 } from "actions/users.actions";
 
-export const loginEpic = (action$, _, { ajax }) =>
+export const loginEpic = (action$, _, { ajax, config }) =>
   action$.pipe(
     ofType(LOGIN),
     switchMap(({ payload }) => {
       return ajax({
-        url: "https://localhost:44383/users/authenticate",
+        url: `${config.API_URL}/users/authenticate`,
         method: "POST",
         body: payload,
         headers: {
@@ -36,12 +36,12 @@ export const loginEpic = (action$, _, { ajax }) =>
     })
   );
 
-export const registerEpic = (action$, _, { ajax }) =>
+export const registerEpic = (action$, _, { ajax, config }) =>
   action$.pipe(
     ofType(REGISTER),
     switchMap(({ payload }) => {
       return ajax({
-        url: "https://localhost:44383/users/register",
+        url: `${config.API_URL}/users/register`,
         method: "POST",
         body: payload,
         headers: {
@@ -61,12 +61,12 @@ export const logoutEpic = (action$) =>
     switchMapTo(EMPTY)
   );
 
-export const fetchTimezonesEpic = (action$, _, { ajax }) =>
+export const fetchTimezonesEpic = (action$, _, { ajax, config }) =>
   action$.pipe(
     ofType(FETCH_TIMEZONES),
     switchMap(() => {
       return ajax({
-        url: "https://localhost:44383/users/timezones",
+        url: `${config.API_URL}/users/timezones`,
         method: "GET",
       }).pipe(
         map(({ response }) => fetchTimezonesSuccessAction(response)),

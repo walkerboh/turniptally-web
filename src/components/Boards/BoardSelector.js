@@ -22,6 +22,7 @@ const BoardSelector = ({ user, boardList, fetchBoardList, board, history }) => {
       <div style={{ marginBottom: "10px" }}>
         You need to join a board before you can enter data. Either create your
         own or get a link from someone with a board.
+        <CreateBoardModal />
       </div>
     );
   }

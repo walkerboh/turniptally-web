@@ -23,12 +23,12 @@ import { of } from "rxjs";
 import { ofType } from "redux-observable";
 import { switchMap, map, catchError, mergeMap } from "rxjs/operators";
 
-export const fetchBoardListEpic = (action$, _, { ajax }) =>
+export const fetchBoardListEpic = (action$, _, { ajax, config }) =>
   action$.pipe(
     ofType(FETCH_BOARD_LIST),
     switchMap(() => {
       return ajax({
-        url: "https://localhost:44383/boards",
+        url: `${config.API_URL}/boards`,
         method: "GET",
         headers: {
           Authorization: `Bearer ${localStorage.token}`,
@@ -40,13 +40,13 @@ export const fetchBoardListEpic = (action$, _, { ajax }) =>
     })
   );
 
-export const fetchBoardDetailsEpic = (action$, _, { ajax }) =>
+export const fetchBoardDetailsEpic = (action$, _, { ajax, config }) =>
   action$.pipe(
     ofType(FETCH_BOARD_DETAILS),
     switchMap(({ payload }) => {
       const url = payload.id
-        ? `https://localhost:44383/boards/${payload.id}`
-        : `https://localhost:44383/boards/name/${payload.name}`;
+        ? `${config.API_URL}/boards/${payload.id}`
+        : `${config.API_URL}/boards/name/${payload.name}`;
       return ajax({
         url,
         method: "GET",
@@ -60,12 +60,12 @@ export const fetchBoardDetailsEpic = (action$, _, { ajax }) =>
     })
   );
 
-export const fetchBoardWeeksEpic = (action$, _, { ajax }) =>
+export const fetchBoardWeeksEpic = (action$, _, { ajax, config }) =>
   action$.pipe(
     ofType(FETCH_BOARD_DETAILS_SUCCESS),
     switchMap(({ payload }) => {
       return ajax({
-        url: `https://localhost:44383/boards/${payload.id}/weeks`,
+        url: `${config.API_URL}/boards/${payload.id}/weeks`,
         method: "GET",
         headers: {
           Authorization: `Bearer ${localStorage.token}`,
@@ -87,12 +87,12 @@ export const fetchBoardWeeksEpic = (action$, _, { ajax }) =>
     })
   );
 
-export const fetchBoardPricesEpic = (action$, _, { ajax }) =>
+export const fetchBoardPricesEpic = (action$, _, { ajax, config }) =>
   action$.pipe(
     ofType(FETCH_BOARD_PRICES),
     switchMap(({ payload }) => {
       return ajax({
-        url: `https://localhost:44383/boards/${payload.id}/prices/${payload.week}`,
+        url: `${config.API_URL}/boards/${payload.id}/prices/${payload.week}`,
         method: "GET",
         headers: {
           Authorization: `Bearer ${localStorage.token}`,
@@ -104,12 +104,12 @@ export const fetchBoardPricesEpic = (action$, _, { ajax }) =>
     })
   );
 
-export const submitBuyPriceEpic = (action$, _, { ajax }) =>
+export const submitBuyPriceEpic = (action$, _, { ajax, config }) =>
   action$.pipe(
     ofType(SUBMIT_BUY_PRICE),
     switchMap(({ payload }) => {
       return ajax({
-        url: `https://localhost:44383/boards/${payload.boardId}/users/${payload.userId}/prices/buy`,
+        url: `${config.API_URL}/boards/${payload.boardId}/users/${payload.userId}/prices/buy`,
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.token}`,
@@ -126,12 +126,12 @@ export const submitBuyPriceEpic = (action$, _, { ajax }) =>
     })
   );
 
-export const submitSellPriceEpic = (action$, _, { ajax }) =>
+export const submitSellPriceEpic = (action$, _, { ajax, config }) =>
   action$.pipe(
     ofType(SUBMIT_SELL_PRICE),
     switchMap(({ payload }) => {
       return ajax({
-        url: `https://localhost:44383/boards/${payload.boardId}/users/${payload.userId}/prices/sell`,
+        url: `${config.API_URL}/boards/${payload.boardId}/users/${payload.userId}/prices/sell`,
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.token}`,

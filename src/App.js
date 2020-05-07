@@ -25,7 +25,7 @@ const App = ({ user }) => {
           <>
             <BoardSelector />
             <Switch>
-              <Route path="/:boardName">
+              <Route path="/board/:boardName">
                 <Board />
               </Route>
             </Switch>

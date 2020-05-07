@@ -4,6 +4,8 @@ import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
+import { generateConfig } from "config";
+
 import { createBrowserHistory } from "history";
 import {
   connectRouter,
@@ -22,7 +24,9 @@ import * as epics from "epics";
 const history = createBrowserHistory();
 
 const rootEpic = combineEpics(...Object.values(epics));
-const epicMiddleware = createEpicMiddleware({ dependencies: { ajax, push } });
+const epicMiddleware = createEpicMiddleware({
+  dependencies: { ajax, push, config: generateConfig() },
+});
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
