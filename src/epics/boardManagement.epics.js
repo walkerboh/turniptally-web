@@ -9,7 +9,7 @@ import {
 import { of } from "rxjs";
 import { ofType } from "redux-observable";
 import { switchMap, catchError, mergeMap } from "rxjs/operators";
-import { fetchBoardDetailsAction } from "actions";
+import { fetchBoardDetailsAction, fetchBoardListAction } from "actions";
 
 export const createBoardEpic = (action$, _, { ajax, push, config }) =>
   action$.pipe(
@@ -33,6 +33,7 @@ export const createBoardEpic = (action$, _, { ajax, push, config }) =>
         mergeMap(({ response }) =>
           of(
             createBoardSuccessAction(response),
+            fetchBoardListAction(),
             push(`/board/${payload.urlName}`)
           )
         ),

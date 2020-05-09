@@ -1,6 +1,7 @@
 import {
   LOGIN_SUCCESS,
   LOGIN_ERROR,
+  REGISTER,
   REGISTER_SUCCESS,
   REGISTER_ERROR,
   LOGOUT,
@@ -19,7 +20,7 @@ export const users = (state = initialState, action) => {
     case LOGIN_SUCCESS: {
       return {
         ...state,
-        user: action.payload,
+        user: { ...action.payload, loggedIn: true },
       };
     }
     case LOGIN_ERROR:
@@ -29,6 +30,12 @@ export const users = (state = initialState, action) => {
           invalidLogin: true,
         },
       };
+    case REGISTER: {
+      return {
+        ...state,
+        user: {},
+      };
+    }
     case REGISTER_SUCCESS: {
       return {
         ...state,
@@ -42,7 +49,7 @@ export const users = (state = initialState, action) => {
         ...state,
         user: {
           registerSuccess: false,
-          registrationError: action.payload.message,
+          registrationError: action.payload.response,
         },
       };
     }

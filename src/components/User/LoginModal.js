@@ -2,15 +2,28 @@ import React, { useState } from "react";
 import Popup from "reactjs-popup";
 import { loginAction } from "actions/users.actions";
 import { connect } from "react-redux";
+import styled from "styled-components";
 
-const LoginModal = ({ login }) => {
+const LoginError = styled.div`
+  color: red;
+`;
+
+const LoginModal = ({ login, user }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   return (
     <Popup modal trigger={<button>Log In</button>} lockScroll>
       {(close) => (
-        <div>
+        <form
+          onSubmit={(e) => {
+            login({ email, password });
+            e.preventDefault();
+          }}
+        >
+          {user.invalidLogin && (
+            <LoginError>Email or password is incorrect.</LoginError>
+          )}
           <div>
             Email
             <input
@@ -27,20 +40,20 @@ const LoginModal = ({ login }) => {
               value={password}
             />
           </div>
-          <input
-            type="submit"
-            value="Login"
-            onClick={() => login({ email, password })}
-          />
+          <input type="submit" value="Login" />
           <button onClick={close}>Close</button>
-        </div>
+        </form>
       )}
     </Popup>
   );
 };
 
+const mapStateToProps = (state) => ({
+  user: state.users.user,
+});
+
 const mapDispatchToProps = {
   login: loginAction,
 };
 
-export default connect(null, mapDispatchToProps)(LoginModal);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginModal);
