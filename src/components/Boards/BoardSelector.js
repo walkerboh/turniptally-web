@@ -30,7 +30,7 @@ const BoardSelector = ({ user, boardList, fetchBoardList, board, history }) => {
   return (
     <div>
       <select
-        onChange={(e) => history.push(`/${e.target.value}`)}
+        onChange={(e) => history.push(`/board/${e.target.value}`)}
         value={board ? board.urlName : ""}
       >
         <option disabled value="">

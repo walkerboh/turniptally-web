@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Popup from "reactjs-popup";
+import ModalPopup from "components/Common/ModalPopup";
 import { registerAction, fetchTimezonesAction } from "actions/users.actions";
 import { connect } from "react-redux";
 import styled from "styled-components";
@@ -11,6 +11,7 @@ const RegisterError = styled.div`
 const RegisterModel = ({ timezones, user, register, fetchTimezones }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
   const [timezoneId, setTimezone] = useState("");
 
   if (!timezones.length) {
@@ -18,7 +19,7 @@ const RegisterModel = ({ timezones, user, register, fetchTimezones }) => {
   }
 
   return (
-    <Popup modal trigger={<button>Register</button>} lockScroll>
+    <ModalPopup trigger={<button>Register</button>} title="Register">
       {(close) => {
         if (user.registerSuccess) {
           return (
@@ -58,6 +59,14 @@ const RegisterModel = ({ timezones, user, register, fetchTimezones }) => {
               />
             </div>
             <div>
+              Confirm Password
+              <input
+                type="password"
+                onChange={(e) => setPasswordConfirm(e.target.value)}
+                value={passwordConfirm}
+              />
+            </div>
+            <div>
               Timezone
               <select
                 value={timezoneId}
@@ -75,12 +84,16 @@ const RegisterModel = ({ timezones, user, register, fetchTimezones }) => {
                 you are in UTC.
               </div>
             </div>
-            <input type="submit" value="Register" />
+            <input
+              type="submit"
+              value="Register"
+              disabled={!(password.length && password === passwordConfirm)}
+            />
             <button onClick={close}>Close</button>
           </form>
         );
       }}
-    </Popup>
+    </ModalPopup>
   );
 };
 
