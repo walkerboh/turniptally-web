@@ -58,6 +58,7 @@ export const joinBoardEpic = (action$, _, { ajax, config }) =>
         mergeMap(({ response }) =>
           of(
             joinBoardSuccessAction(response),
+            fetchBoardListAction(),
             fetchBoardDetailsAction({ id: payload.id })
           )
         ),

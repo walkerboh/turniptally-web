@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Header from "./components/Header";
 import BoardSelector from "./components/Boards/BoardSelector";
 import Board from "./components/Boards/Board";
+import Profile from "./components/User/Profile";
 import styled from "styled-components";
 import "App.css";
 import { withRouter, Switch, Route } from "react-router-dom";
@@ -59,12 +60,15 @@ const App = ({ user }) => {
       <Site>
         <div>
           <Header />
-          {user.email ? (
+          {user.loggedIn ? (
             <>
-              <BoardSelector />
               <Switch>
                 <Route path="/board/:boardName">
+                  <BoardSelector />
                   <Board />
+                </Route>
+                <Route path="/">
+                  <Profile />
                 </Route>
               </Switch>
             </>

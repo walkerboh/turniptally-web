@@ -12,12 +12,6 @@ import {
   fetchBoardPricesSuccessAction,
   fetchBoardPricesErrorAction,
   fetchBoardPricesAction,
-  SUBMIT_BUY_PRICE,
-  submitBuyPriceSuccessAction,
-  submitBuyPriceErrorAction,
-  SUBMIT_SELL_PRICE,
-  submitSellPriceSuccessAction,
-  submitSellPriceErrorAction,
 } from "actions/boardData.actions";
 import { of } from "rxjs";
 import { ofType } from "redux-observable";
@@ -92,7 +86,7 @@ export const fetchBoardPricesEpic = (action$, _, { ajax, config }) =>
     ofType(FETCH_BOARD_PRICES),
     switchMap(({ payload }) => {
       return ajax({
-        url: `${config.API_URL}/boards/${payload.id}/prices/${payload.week}`,
+        url: `${config.API_URL}/prices/boards/${payload.id}/weeks/${payload.week}`,
         method: "GET",
         headers: {
           Authorization: `Bearer ${localStorage.token}`,
@@ -100,52 +94,6 @@ export const fetchBoardPricesEpic = (action$, _, { ajax, config }) =>
       }).pipe(
         map(({ response }) => fetchBoardPricesSuccessAction(response)),
         catchError((err) => of(fetchBoardPricesErrorAction(err)))
-      );
-    })
-  );
-
-export const submitBuyPriceEpic = (action$, _, { ajax, config }) =>
-  action$.pipe(
-    ofType(SUBMIT_BUY_PRICE),
-    switchMap(({ payload }) => {
-      return ajax({
-        url: `${config.API_URL}/boards/${payload.boardId}/users/${payload.userId}/prices/buy`,
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${localStorage.token}`,
-          "Content-Type": "application/json",
-        },
-        body: {
-          date: payload.date,
-          price: payload.price,
-        },
-      }).pipe(
-        map(({ response }) => submitBuyPriceSuccessAction(response)),
-        catchError((err) => of(submitBuyPriceErrorAction(err)))
-      );
-    })
-  );
-
-export const submitSellPriceEpic = (action$, _, { ajax, config }) =>
-  action$.pipe(
-    ofType(SUBMIT_SELL_PRICE),
-    switchMap(({ payload }) => {
-      return ajax({
-        url: `${config.API_URL}/boards/${payload.boardId}/users/${payload.userId}/prices/sell`,
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${localStorage.token}`,
-          "Content-Type": "application/json",
-        },
-        body: {
-          date: payload.date,
-          price: payload.price,
-          day: payload.day,
-          period: payload.period,
-        },
-      }).pipe(
-        map(({ response }) => submitSellPriceSuccessAction(response)),
-        catchError((err) => of(submitSellPriceErrorAction(err)))
       );
     })
   );

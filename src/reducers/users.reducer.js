@@ -6,9 +6,11 @@ import {
   REGISTER_ERROR,
   LOGOUT,
   FETCH_TIMEZONES_SUCCESS,
+  FETCH_USER_WEEK_DETAILS_SUCCESS,
+  FETCH_USER_DETAILS_SUCCESS,
 } from "actions/users.actions";
 
-const user = JSON.parse(localStorage.getItem("user"));
+const user = { ...JSON.parse(localStorage.getItem("user")), loggedIn: true };
 
 const initialState = {
   user: user ?? {},
@@ -50,6 +52,24 @@ export const users = (state = initialState, action) => {
         user: {
           registerSuccess: false,
           registrationError: action.payload.response,
+        },
+      };
+    }
+    case FETCH_USER_DETAILS_SUCCESS: {
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          details: action.payload,
+        },
+      };
+    }
+    case FETCH_USER_WEEK_DETAILS_SUCCESS: {
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          week: action.payload,
         },
       };
     }

@@ -4,6 +4,7 @@ import styled from "styled-components/macro";
 import LoginModal from "./User/LoginModal";
 import RegisterModal from "./User/RegisterModal";
 import { logoutAction } from "actions/users.actions";
+import { Link } from "react-router-dom";
 
 const HeaderSection = styled.div`
   width: 100%;
@@ -21,11 +22,11 @@ const HeaderSection = styled.div`
 export const Header = ({ user, logout }) => {
   return (
     <HeaderSection>
-      <div>Turnip Tally</div>
+      <Link to="/">Turnip Tally</Link>
       <div>
         {user.email ? (
           <>
-            {user.email}
+            <Link to="/">{user.email}</Link>
             <button type="button" onClick={logout}>
               Logout
             </button>
