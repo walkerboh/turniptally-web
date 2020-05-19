@@ -5,10 +5,16 @@ import {
   JOIN_BOARD,
   joinBoardSuccessAction,
   joinBoardErrorAction,
+  DELETE_BOARD,
+  deleteBoardSuccessAction,
+  deleteBoardErrorAction,
+  LEAVE_BOARD,
+  leaveBoardSuccessAction,
+  leaveBoardErrorAction,
 } from "actions/boardManagement.actions";
 import { of } from "rxjs";
 import { ofType } from "redux-observable";
-import { switchMap, catchError, mergeMap } from "rxjs/operators";
+import { switchMap, catchError, map, mergeMap } from "rxjs/operators";
 import { fetchBoardDetailsAction, fetchBoardListAction } from "actions";
 
 export const createBoardEpic = (action$, _, { ajax, push, config }) =>
@@ -63,6 +69,40 @@ export const joinBoardEpic = (action$, _, { ajax, config }) =>
           )
         ),
         catchError((err) => of(joinBoardErrorAction(err)))
+      );
+    })
+  );
+
+export const deleteBoardEpic = (action$, _, { ajax, config }) =>
+  action$.pipe(
+    ofType(DELETE_BOARD),
+    switchMap(({ payload }) => {
+      return ajax({
+        url: `${config.API_URL}/boards/${payload.id}`,
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.token}`,
+        },
+      }).pipe(
+        map(({ response }) => deleteBoardSuccessAction(response)),
+        catchError((err) => of(deleteBoardErrorAction(err)))
+      );
+    })
+  );
+
+export const leaveBoardEpic = (action$, _, { ajax, config }) =>
+  action$.pipe(
+    ofType(LEAVE_BOARD),
+    switchMap(({ payload }) => {
+      return ajax({
+        url: `${config.API_URL}/boards/${payload.boardId}/users/${payload.userId}`,
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.token}`,
+        },
+      }).pipe(
+        map(({ response }) => leaveBoardSuccessAction(response)),
+        catchError((err) => of(leaveBoardErrorAction(err)))
       );
     })
   );

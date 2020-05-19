@@ -5,6 +5,8 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import PriceTable from "components/Common/PriceTable";
 import CreateBoardModal from "components/Boards/CreateBoardModal";
+import DeleteBoardModal from "components/User/DeleteBoardModal";
+import LeaveBoardModal from "components/User/LeaveBoardModal";
 
 const BoardsSection = styled.div`
   display: flex;
@@ -61,7 +63,7 @@ const Profile = ({ userDetails, week, fetchUserDetails, fetchWeekDetails }) => {
                     {board.displayName}
                   </Link>
                   {/* <span>Members: {board.users.length}</span> */}
-                  <button>Delete</button>
+                  <DeleteBoardModal board={board} />
                 </Board>
               );
             })}
@@ -77,7 +79,7 @@ const Profile = ({ userDetails, week, fetchUserDetails, fetchWeekDetails }) => {
                     {board.displayName}
                   </Link>
                   {/* <span>Members: {board.users.length}</span> */}
-                  <button>Leave</button>
+                  <LeaveBoardModal board={board} />
                 </Board>
               );
             })}

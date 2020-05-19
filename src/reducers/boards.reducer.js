@@ -17,6 +17,12 @@ import {
   CREATE_BOARD_SUCCESS,
   CREATE_BOARD_ERROR,
   CREATE_BOARD_RESET,
+  DELETE_BOARD_SUCCESS,
+  DELETE_BOARD_ERROR,
+  DELETE_BOARD_RESET,
+  LEAVE_BOARD_SUCCESS,
+  LEAVE_BOARD_ERROR,
+  LEAVE_BOARD_RESET,
 } from "actions/boardManagement.actions";
 
 const initialState = {
@@ -157,6 +163,52 @@ export const boards = (state = initialState, action) => {
       return {
         ...state,
         create: null,
+      };
+    }
+    case DELETE_BOARD_SUCCESS: {
+      return {
+        ...state,
+        delete: {
+          success: true,
+        },
+      };
+    }
+    case DELETE_BOARD_ERROR: {
+      return {
+        ...state,
+        delete: {
+          success: false,
+          error: action.payload,
+        },
+      };
+    }
+    case DELETE_BOARD_RESET: {
+      return {
+        ...state,
+        delete: null,
+      };
+    }
+    case LEAVE_BOARD_SUCCESS: {
+      return {
+        ...state,
+        leave: {
+          success: true,
+        },
+      };
+    }
+    case LEAVE_BOARD_ERROR: {
+      return {
+        ...state,
+        leave: {
+          success: false,
+          error: action.payload,
+        },
+      };
+    }
+    case LEAVE_BOARD_RESET: {
+      return {
+        ...state,
+        leave: null,
       };
     }
     default: {
