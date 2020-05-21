@@ -7,6 +7,7 @@ import styled from "styled-components";
 import "App.css";
 import { withRouter, Switch, Route } from "react-router-dom";
 import { connect } from "react-redux";
+import Button from "components/Common/Button";
 
 const Site = styled.div`
   display: flex;
@@ -84,14 +85,14 @@ const App = ({ user }) => {
         <BottomBanner>
           <div>
             This website uses cookies to give you a smooth experience.
-            <AcceptButton
+            <Button
               onClick={() => {
                 localStorage.cookie = true;
                 setShowCookie(true);
               }}
             >
               Accept
-            </AcceptButton>
+            </Button>
           </div>
         </BottomBanner>
       )}
