@@ -7,7 +7,7 @@ import {
 } from "actions/boardData.actions";
 import { joinBoardAction } from "actions/boardManagement.actions";
 import { withRouter } from "react-router-dom";
-import PriceTable from "components/Common/PriceTable";
+import PriceTable from "components/common/PriceTable";
 
 const Board = ({ board, fetchBoard, match, joinBoard, fetchPrices }) => {
   useEffect(() => {
@@ -34,7 +34,7 @@ const Board = ({ board, fetchBoard, match, joinBoard, fetchPrices }) => {
             <input
               type="text"
               value={displayName}
-              onChange={(e) => setDisplayName(e.target.value)}
+              onChange={e => setDisplayName(e.target.value)}
             />
           </div>
           {board.privateBoard ? (
@@ -43,7 +43,7 @@ const Board = ({ board, fetchBoard, match, joinBoard, fetchPrices }) => {
               <input
                 type="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={e => setPassword(e.target.value)}
               />
             </div>
           ) : null}
@@ -64,11 +64,9 @@ const Board = ({ board, fetchBoard, match, joinBoard, fetchPrices }) => {
         <div>
           Select a week:
           <select
-            onChange={(e) =>
-              fetchPrices({ id: board.id, week: e.target.value })
-            }
+            onChange={e => fetchPrices({ id: board.id, week: e.target.value })}
           >
-            {board.weeks.map((week) => (
+            {board.weeks.map(week => (
               <option key={week} value={week}>
                 {week}
               </option>
@@ -83,7 +81,7 @@ const Board = ({ board, fetchBoard, match, joinBoard, fetchPrices }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   board: state.boards.board,
 });
 

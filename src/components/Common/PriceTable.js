@@ -39,7 +39,7 @@ const PriceTable = ({
         </tr>
       </thead>
       <tbody>
-        {userPrices.map((u) => {
+        {userPrices.map(u => {
           const submitOptions = {
             userId: u.userId,
             date: weekDate,
@@ -52,7 +52,7 @@ const PriceTable = ({
                 <BellInput
                   type="text"
                   defaultValue={u.buyPrice}
-                  onBlur={(e) =>
+                  onBlur={e =>
                     submitBuyPrice({
                       ...submitOptions,
                       price: e.target.value,
@@ -60,13 +60,13 @@ const PriceTable = ({
                   }
                 />
               </td>
-              {days.map((day) => {
-                return periods.map((period) => (
+              {days.map(day => {
+                return periods.map(period => (
                   <td key={`${u.boardUserId}-${day}-${period}`}>
                     <BellInput
                       type="text"
                       defaultValue={getPrice(u.prices, day, period)}
-                      onBlur={(e) =>
+                      onBlur={e =>
                         submitSellPrice({
                           ...submitOptions,
                           price: e.target.value,

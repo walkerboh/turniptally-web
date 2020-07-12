@@ -1,18 +1,25 @@
 import React from "react";
 import { connect } from "react-redux";
 import styled from "styled-components/macro";
-import LoginModal from "./User/LoginModal";
-import RegisterModal from "./User/RegisterModal";
+import LoginModal from "./user/LoginModal";
+import RegisterModal from "./user/RegisterModal";
 import { logoutAction } from "actions/users.actions";
 import { Link } from "react-router-dom";
+import Button from "components/common/Button";
 
 const HeaderSection = styled.div`
   width: 100%;
-  padding: 8px;
+  padding-top: 2px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   border-bottom: 1px solid black;
+
+  > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
   button {
     margin-left: 8px;
@@ -22,14 +29,16 @@ const HeaderSection = styled.div`
 export const Header = ({ user, logout }) => {
   return (
     <HeaderSection>
-      <Link to="/">Turnip Tally</Link>
+      <Link to="/">
+        <img src="/fullLogo.png" height="75px" alt="logo"></img>
+      </Link>
       <div>
         {user.email ? (
           <>
             <Link to="/">{user.email}</Link>
-            <button type="button" onClick={logout}>
+            <Button type="button" onClick={logout}>
               Logout
-            </button>
+            </Button>
           </>
         ) : (
           <>
@@ -41,7 +50,7 @@ export const Header = ({ user, logout }) => {
     </HeaderSection>
   );
 };
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   user: state.users.user,
 });
 

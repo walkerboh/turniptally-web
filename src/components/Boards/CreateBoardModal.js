@@ -5,6 +5,7 @@ import {
   createBoardResetAction,
 } from "actions/boardManagement.actions";
 import { connect } from "react-redux";
+import Button from "components/common/Button";
 
 const CreateBoardModal = ({ create, createBoard, resetCreate }) => {
   const [displayName, setDisplayName] = useState("");
@@ -16,7 +17,7 @@ const CreateBoardModal = ({ create, createBoard, resetCreate }) => {
   return (
     <Popup
       modal
-      trigger={<button>Create Board</button>}
+      trigger={<Button>Create Board</Button>}
       lockScroll
       onOpen={() => void resetCreate()}
       onClose={() => {
@@ -27,12 +28,12 @@ const CreateBoardModal = ({ create, createBoard, resetCreate }) => {
         setPassword("");
       }}
     >
-      {(close) =>
+      {close =>
         create && create.success ? (
           <div>
             Your board has been created successfully!
             <div>
-              <button onClick={close}>Close</button>
+              <Button onClick={close}>Close</Button>
             </div>
           </div>
         ) : (
@@ -41,7 +42,7 @@ const CreateBoardModal = ({ create, createBoard, resetCreate }) => {
               Display Name
               <input
                 type="text"
-                onChange={(e) => setDisplayName(e.target.value)}
+                onChange={e => setDisplayName(e.target.value)}
                 value={displayName}
               />
             </div>
@@ -49,7 +50,7 @@ const CreateBoardModal = ({ create, createBoard, resetCreate }) => {
               URL Name
               <input
                 type="text"
-                onChange={(e) => setUrlName(e.target.value)}
+                onChange={e => setUrlName(e.target.value)}
                 value={urlName}
               />
             </div>
@@ -66,7 +67,7 @@ const CreateBoardModal = ({ create, createBoard, resetCreate }) => {
                 Board password
                 <input
                   type="text"
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={e => setPassword(e.target.value)}
                   value={password}
                 />
                 <div>
@@ -79,7 +80,7 @@ const CreateBoardModal = ({ create, createBoard, resetCreate }) => {
               Your Display Name
               <input
                 type="text"
-                onChange={(e) => setUserDisplayName(e.target.value)}
+                onChange={e => setUserDisplayName(e.target.value)}
                 value={userDisplayName}
               />
               <div>This will be your username on the board</div>
@@ -97,7 +98,7 @@ const CreateBoardModal = ({ create, createBoard, resetCreate }) => {
                 })
               }
             />
-            <button onClick={close}>Close</button>
+            <Button onClick={close}>Close</Button>
           </div>
         )
       }
@@ -105,7 +106,7 @@ const CreateBoardModal = ({ create, createBoard, resetCreate }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   create: state.boards.create,
 });
 

@@ -1,12 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import ModalPopup from "components/Common/ModalPopup";
+import ModalPopup from "components/common/ModalPopup";
 import {
   deleteBoardAction,
   deleteBoardResetAction,
 } from "actions/boardManagement.actions";
 import { fetchUserDetailsAction } from "actions/users.actions";
+import Button from "components/common/Button";
 
 const ButtonRow = styled.div`
   display: flex;
@@ -26,25 +27,25 @@ const DeleteBoardModal = ({
 }) => {
   return (
     <ModalPopup
-      trigger={<button>Delete</button>}
+      trigger={<Button>Delete</Button>}
       title={`Delete Board - ${board.displayName}`}
       onClose={resetDelete}
     >
-      {(close) => {
+      {close => {
         if (deleteBoard) {
           if (deleteBoard.success) {
             return (
               <div>
                 <div>The board was successfully deleted.</div>
                 <ButtonRow>
-                  <button
+                  <Button
                     onClick={() => {
                       fetchUserDetails();
                       close();
                     }}
                   >
                     Close
-                  </button>
+                  </Button>
                 </ButtonRow>
               </div>
             );
@@ -56,7 +57,7 @@ const DeleteBoardModal = ({
                   again later.
                 </div>
                 <ButtonRow>
-                  <button onClick={close}>Close</button>
+                  <Button onClick={close}>Close</Button>
                 </ButtonRow>
               </div>
             );
@@ -70,10 +71,13 @@ const DeleteBoardModal = ({
               irreversible.
             </div>
             <ButtonRow>
-              <button onClick={close}>Cancel</button>
-              <button onClick={() => deleteBoardAction({ id: board.id })}>
+              <Button onClick={close}>Cancel</Button>
+              <Button
+                onClick={() => deleteBoardAction({ id: board.id })}
+                variant="danger"
+              >
                 Delete!
-              </button>
+              </Button>
             </ButtonRow>
           </div>
         );
@@ -82,7 +86,7 @@ const DeleteBoardModal = ({
   );
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   deleteBoard: state.boards.delete,
 });
 

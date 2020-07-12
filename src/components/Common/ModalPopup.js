@@ -21,10 +21,18 @@ const ModalPopup = ({
   children,
   onOpen = () => {},
   onClose = () => {},
+  width = "50%",
 }) => {
   return (
-    <Popup modal lockScroll onOpen={onOpen} onClose={onClose} trigger={trigger}>
-      {(close) => (
+    <Popup
+      modal
+      lockScroll
+      onOpen={onOpen}
+      onClose={onClose}
+      trigger={trigger}
+      contentStyle={{ width }}
+    >
+      {close => (
         <>
           <PopupHeader>
             {title}

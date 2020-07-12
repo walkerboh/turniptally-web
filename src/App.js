@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import Header from "./components/Header";
-import BoardSelector from "./components/Boards/BoardSelector";
-import Board from "./components/Boards/Board";
-import Profile from "./components/User/Profile";
+import BoardSelector from "./components/boards/BoardSelector";
+import Board from "./components/boards/Board";
+import Profile from "./components/user/Profile";
 import styled from "styled-components";
 import "App.css";
 import { withRouter, Switch, Route } from "react-router-dom";
 import { connect } from "react-redux";
-import Button from "components/Common/Button";
+import Button from "components/common/Button";
 
 const Site = styled.div`
   display: flex;
@@ -44,12 +44,6 @@ const BottomBanner = styled.div`
     margin: 0 auto;
     padding: 20px 0;
   }
-`;
-
-const AcceptButton = styled.button`
-  border: 1px solid gray;
-  border-radius: 6px;
-  padding: 10px 20px;
 `;
 
 const App = ({ user }) => {
@@ -90,6 +84,7 @@ const App = ({ user }) => {
                 localStorage.cookie = true;
                 setShowCookie(true);
               }}
+              size="large"
             >
               Accept
             </Button>
@@ -100,7 +95,7 @@ const App = ({ user }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   user: state.users.user,
 });
 

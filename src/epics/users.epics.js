@@ -32,6 +32,9 @@ import {
   fetchUserWeekDetailsSuccessAction,
   fetchUserWeekDetailsErrorAction,
   fetchUserWeekDetailsAction,
+  SEND_PASSWORD_RESET_EMAIL,
+  sendPasswordResetEmailSuccessAction,
+  sendPasswordResetEmailErrorAction,
 } from "actions/users.actions";
 
 export const loginEpic = (action$, _, { ajax, config }) =>
@@ -51,7 +54,7 @@ export const loginEpic = (action$, _, { ajax, config }) =>
           localStorage.setItem("token", response.token);
           return loginSuccessAction(response);
         }),
-        catchError((err) => of(loginErrorAction(err)))
+        catchError(err => of(loginErrorAction(err)))
       );
     })
   );
@@ -69,12 +72,12 @@ export const registerEpic = (action$, _, { ajax, config }) =>
         },
       }).pipe(
         map(({ response }) => registerSuccessAction(response)),
-        catchError((err) => of(registerErrorAction(err)))
+        catchError(err => of(registerErrorAction(err)))
       );
     })
   );
 
-export const logoutEpic = (action$) =>
+export const logoutEpic = action$ =>
   action$.pipe(
     ofType(LOGOUT),
     tap(() => localStorage.removeItem("user")),
@@ -90,7 +93,7 @@ export const fetchTimezonesEpic = (action$, _, { ajax, config }) =>
         method: "GET",
       }).pipe(
         map(({ response }) => fetchTimezonesSuccessAction(response)),
-        catchError((err) => of(fetchTimezonesErrorAction(err)))
+        catchError(err => of(fetchTimezonesErrorAction(err)))
       );
     })
   );
@@ -112,7 +115,7 @@ export const submitBuyPriceEpic = (action$, _, { ajax, config }) =>
         },
       }).pipe(
         map(({ response }) => submitBuyPriceSuccessAction(response)),
-        catchError((err) => of(submitBuyPriceErrorAction(err)))
+        catchError(err => of(submitBuyPriceErrorAction(err)))
       );
     })
   );
@@ -136,7 +139,7 @@ export const submitSellPriceEpic = (action$, _, { ajax, config }) =>
         },
       }).pipe(
         map(({ response }) => submitSellPriceSuccessAction(response)),
-        catchError((err) => of(submitSellPriceErrorAction(err)))
+        catchError(err => of(submitSellPriceErrorAction(err)))
       );
     })
   );
@@ -163,7 +166,7 @@ export const fetchUserWeeksEpic = (action$, _, { ajax, config }) =>
 
           return actions;
         }),
-        catchError((err) => of(fetchUserDetailsErrorAction(err)))
+        catchError(err => of(fetchUserDetailsErrorAction(err)))
       );
     })
   );
@@ -180,7 +183,26 @@ export const fetchUserWeekDetailsEpic = (action$, _, { ajax, config }) =>
         },
       }).pipe(
         map(({ response }) => fetchUserWeekDetailsSuccessAction(response)),
-        catchError((err) => of(fetchUserWeekDetailsErrorAction(err)))
+        catchError(err => of(fetchUserWeekDetailsErrorAction(err)))
+      );
+    })
+  );
+
+export const sendPasswordResetEmailEpic = (action$, _, { ajax, config }) =>
+  action$.pipe(
+    ofType(SEND_PASSWORD_RESET_EMAIL),
+    tap(() => console.log("ahhhh")),
+    switchMap(({ payload }) => {
+      return ajax({
+        url: `${config.API_URL}/users/passwordResetEmail`,
+        method: "POST",
+        body: payload,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).pipe(
+        map(() => sendPasswordResetEmailSuccessAction()),
+        catchError(() => of(sendPasswordResetEmailErrorAction()))
       );
     })
   );

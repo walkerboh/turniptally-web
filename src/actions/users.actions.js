@@ -29,32 +29,38 @@ export const FETCH_USER_WEEK_DETAILS_SUCCESS =
   "FETCH_USER_WEEK_DETAILS_SUCCESS";
 export const FETCH_USER_WEEK_DETAILS_ERROR = "FETCH_USER_WEEK_DETAILS_ERROR";
 
-export const loginAction = (payload) => ({
+export const SEND_PASSWORD_RESET_EMAIL = "SEND_PASSWORD_RESET_EMAIL";
+export const SEND_PASSWORD_RESET_EMAIL_SUCCESS =
+  "SEND_PASSWORD_RESET_EMAIL_SUCCESS";
+export const SEND_PASSWORD_RESET_EMAIL_ERROR =
+  "SEND_PASSWORD_RESET_EMAIL_ERROR";
+
+export const loginAction = payload => ({
   type: LOGIN,
   payload,
 });
 
-export const loginSuccessAction = (payload) => ({
+export const loginSuccessAction = payload => ({
   type: LOGIN_SUCCESS,
   payload,
 });
 
-export const loginErrorAction = (payload) => ({
+export const loginErrorAction = payload => ({
   type: LOGIN_ERROR,
   payload,
 });
 
-export const registerAction = (payload) => ({
+export const registerAction = payload => ({
   type: REGISTER,
   payload,
 });
 
-export const registerSuccessAction = (payload) => ({
+export const registerSuccessAction = payload => ({
   type: REGISTER_SUCCESS,
   payload,
 });
 
-export const registerErrorAction = (payload) => ({
+export const registerErrorAction = payload => ({
   type: REGISTER_ERROR,
   payload,
 });
@@ -67,7 +73,7 @@ export const fetchTimezonesAction = () => ({
   type: FETCH_TIMEZONES,
 });
 
-export const fetchTimezonesSuccessAction = (payload) => ({
+export const fetchTimezonesSuccessAction = payload => ({
   type: FETCH_TIMEZONES_SUCCESS,
   payload,
 });
@@ -76,32 +82,32 @@ export const fetchTimezonesErrorAction = () => ({
   type: FETCH_TIMEZONES_ERROR,
 });
 
-export const submitBuyPriceAction = (payload) => ({
+export const submitBuyPriceAction = payload => ({
   type: SUBMIT_BUY_PRICE,
   payload,
 });
 
-export const submitBuyPriceSuccessAction = (payload) => ({
+export const submitBuyPriceSuccessAction = payload => ({
   type: SUBMIT_BUY_PRICE_SUCCESS,
   payload,
 });
 
-export const submitBuyPriceErrorAction = (payload) => ({
+export const submitBuyPriceErrorAction = payload => ({
   type: SUBMIT_BUY_PRICE_ERROR,
   payload,
 });
 
-export const submitSellPriceAction = (payload) => ({
+export const submitSellPriceAction = payload => ({
   type: SUBMIT_SELL_PRICE,
   payload,
 });
 
-export const submitSellPriceSuccessAction = (payload) => ({
+export const submitSellPriceSuccessAction = payload => ({
   type: SUBMIT_SELL_PRICE_SUCCESS,
   payload,
 });
 
-export const submitSellPriceErrorAction = (payload) => ({
+export const submitSellPriceErrorAction = payload => ({
   type: SUBMIT_SELL_PRICE_ERROR,
   payload,
 });
@@ -110,27 +116,40 @@ export const fetchUserDetailsAction = () => ({
   type: FETCH_USER_DETAILS,
 });
 
-export const fetchUserDetailsSuccessAction = (payload) => ({
+export const fetchUserDetailsSuccessAction = payload => ({
   type: FETCH_USER_DETAILS_SUCCESS,
   payload,
 });
 
-export const fetchUserDetailsErrorAction = (payload) => ({
+export const fetchUserDetailsErrorAction = payload => ({
   type: FETCH_USER_DETAILS_ERROR,
   payload,
 });
 
-export const fetchUserWeekDetailsAction = (payload) => ({
+export const fetchUserWeekDetailsAction = payload => ({
   type: FETCH_USER_WEEK_DETAILS,
   payload,
 });
 
-export const fetchUserWeekDetailsSuccessAction = (payload) => ({
+export const fetchUserWeekDetailsSuccessAction = payload => ({
   type: FETCH_USER_WEEK_DETAILS_SUCCESS,
   payload,
 });
 
-export const fetchUserWeekDetailsErrorAction = (payload) => ({
+export const fetchUserWeekDetailsErrorAction = payload => ({
   type: FETCH_USER_WEEK_DETAILS_ERROR,
   payload,
+});
+
+export const sendPasswordResetEmailAction = payload => ({
+  type: SEND_PASSWORD_RESET_EMAIL,
+  payload,
+});
+
+export const sendPasswordResetEmailSuccessAction = () => ({
+  type: SEND_PASSWORD_RESET_EMAIL_SUCCESS,
+});
+
+export const sendPasswordResetEmailErrorAction = () => ({
+  type: SEND_PASSWORD_RESET_EMAIL_ERROR,
 });

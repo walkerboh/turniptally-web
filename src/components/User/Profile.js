@@ -3,10 +3,10 @@ import { connect } from "react-redux";
 import { fetchUserWeekDetailsAction, fetchUserDetailsAction } from "actions";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import PriceTable from "components/Common/PriceTable";
-import CreateBoardModal from "components/Boards/CreateBoardModal";
-import DeleteBoardModal from "components/User/DeleteBoardModal";
-import LeaveBoardModal from "components/User/LeaveBoardModal";
+import PriceTable from "components/common/PriceTable";
+import CreateBoardModal from "components/boards/CreateBoardModal";
+import DeleteBoardModal from "components/user/DeleteBoardModal";
+import LeaveBoardModal from "components/user/LeaveBoardModal";
 
 const BoardsSection = styled.div`
   display: flex;
@@ -36,8 +36,8 @@ const Profile = ({ userDetails, week, fetchUserDetails, fetchWeekDetails }) => {
     <div>
       <div>
         Select a week:
-        <select onChange={(e) => fetchWeekDetails({ date: e.target.value })}>
-          {userDetails.weeks.map((w) => (
+        <select onChange={e => fetchWeekDetails({ date: e.target.value })}>
+          {userDetails.weeks.map(w => (
             <option key={w} value={w}>
               {w}
             </option>
@@ -56,7 +56,7 @@ const Profile = ({ userDetails, week, fetchUserDetails, fetchWeekDetails }) => {
         <div>
           <h2>Owned Boards</h2>
           <div>
-            {userDetails.ownedBoards.map((board) => {
+            {userDetails.ownedBoards.map(board => {
               return (
                 <Board key={board.id}>
                   <Link to={`/board/${board.urlName}`}>
@@ -72,7 +72,7 @@ const Profile = ({ userDetails, week, fetchUserDetails, fetchWeekDetails }) => {
         <div>
           <h2>Member Boards</h2>
           <div>
-            {userDetails.memberBoards.map((board) => {
+            {userDetails.memberBoards.map(board => {
               return (
                 <Board key={board.id}>
                   <Link to={`/board/${board.urlName}`}>
@@ -90,7 +90,7 @@ const Profile = ({ userDetails, week, fetchUserDetails, fetchWeekDetails }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   userDetails: state.users.user.details,
   week: state.users.user.week,
 });
