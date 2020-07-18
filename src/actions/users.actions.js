@@ -35,6 +35,16 @@ export const SEND_PASSWORD_RESET_EMAIL_SUCCESS =
 export const SEND_PASSWORD_RESET_EMAIL_ERROR =
   "SEND_PASSWORD_RESET_EMAIL_ERROR";
 
+export const FETCH_PASSWORD_RESET_STATUS = "FETCH_PASSWORD_RESET_STATUS";
+export const FETCH_PASSWORD_RESET_STATUS_SUCCESS =
+  "FETCH_PASSWORD_RESET_STATUS_SUCCESS";
+export const FETCH_PASSWORD_RESET_STATUS_ERROR =
+  "FETCH_PASSWORD_RESET_STATUS_ERROR";
+
+export const SEND_PASSWORD_RESET = "SEND_PASSWORD_RESET";
+export const SEND_PASSWORD_RESET_SUCCESS = "SEND_PASSWORD_RESET_SUCCESS";
+export const SEND_PASSWORD_RESET_ERROR = "SEND_PASSWORD_RESET_ERROR";
+
 export const loginAction = payload => ({
   type: LOGIN,
   payload,
@@ -152,4 +162,31 @@ export const sendPasswordResetEmailSuccessAction = () => ({
 
 export const sendPasswordResetEmailErrorAction = () => ({
   type: SEND_PASSWORD_RESET_EMAIL_ERROR,
+});
+
+export const fetchPasswordResetStatusAction = payload => ({
+  type: FETCH_PASSWORD_RESET_STATUS,
+  payload,
+});
+
+export const fetchPasswordResetStatusSuccessAction = () => ({
+  type: FETCH_PASSWORD_RESET_STATUS_SUCCESS,
+});
+
+export const fetchPasswordResetStatusErrorAction = () => ({
+  type: FETCH_PASSWORD_RESET_STATUS_ERROR,
+});
+
+export const sendPasswordResetAction = payload => ({
+  type: SEND_PASSWORD_RESET,
+  payload,
+});
+
+export const sendPasswordResetSuccessAction = () => ({
+  type: SEND_PASSWORD_RESET_SUCCESS,
+});
+
+export const sendPasswordResetErrorAction = payload => ({
+  type: SEND_PASSWORD_RESET,
+  payload,
 });

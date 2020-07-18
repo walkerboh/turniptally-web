@@ -1,32 +1,34 @@
-import React, { useState } from "react";
-import Popup from "reactjs-popup";
+import React from "react";
+import ModalPopup from "components/common/ModalPopup";
 import {
   createBoardAction,
   createBoardResetAction,
 } from "actions/boardManagement.actions";
 import { connect } from "react-redux";
 import Button from "components/common/Button";
+import { Formik, Field } from "formik";
+import { Form, ErrorMessage, Note, GenericError } from "components/styled/form";
+import * as Yup from "yup";
+
+const validationSchema = Yup.object({
+  displayName: Yup.string().required("Required"),
+  urlName: Yup.string()
+    .required("Required")
+    .max(50, "Must be 50 characters or less")
+    .matches(/^[a-zA-Z0-9]*$/, "Must be letters and numbers only"),
+  userDisplayName: Yup.string().required("Required"),
+  password: Yup.string().when("privateBoard", {
+    is: true,
+    then: Yup.string().required("Required"),
+  }),
+});
 
 const CreateBoardModal = ({ create, createBoard, resetCreate }) => {
-  const [displayName, setDisplayName] = useState("");
-  const [urlName, setUrlName] = useState("");
-  const [privateBoard, setPrivateBoard] = useState(false);
-  const [userDisplayName, setUserDisplayName] = useState("");
-  const [password, setPassword] = useState("");
-
   return (
-    <Popup
-      modal
+    <ModalPopup
       trigger={<Button>Create Board</Button>}
-      lockScroll
       onOpen={() => void resetCreate()}
-      onClose={() => {
-        setDisplayName("");
-        setUrlName("");
-        setPrivateBoard(false);
-        setUserDisplayName("");
-        setPassword("");
-      }}
+      title="Create Board"
     >
       {close =>
         create && create.success ? (
@@ -37,72 +39,65 @@ const CreateBoardModal = ({ create, createBoard, resetCreate }) => {
             </div>
           </div>
         ) : (
-          <div>
-            <div>
-              Display Name
-              <input
-                type="text"
-                onChange={e => setDisplayName(e.target.value)}
-                value={displayName}
-              />
-            </div>
-            <div>
-              URL Name
-              <input
-                type="text"
-                onChange={e => setUrlName(e.target.value)}
-                value={urlName}
-              />
-            </div>
-            <div>
-              Private
-              <input
-                type="checkbox"
-                checked={privateBoard}
-                onChange={() => setPrivateBoard(!privateBoard)}
-              />
-            </div>
-            {privateBoard && (
-              <div>
-                Board password
-                <input
-                  type="text"
-                  onChange={e => setPassword(e.target.value)}
-                  value={password}
-                />
+          <Formik
+            initialValues={{
+              displayName: "",
+              urlName: "",
+              userDisplayName: "",
+              privateBoard: false,
+              password: "",
+            }}
+            onSubmit={values => createBoard(values)}
+            validationSchema={validationSchema}
+          >
+            {({ values }) => (
+              <Form>
+                {create && create.error && (
+                  <GenericError>{create.error.message}</GenericError>
+                )}
                 <div>
-                  This password will need to be provided by users who wish to
-                  join this board.
+                  <label htmlFor="displayName">Display Name</label>
+                  <Field name="displayName" placeholder="Display Name" />
+                  <ErrorMessage name="displayName" component="div" />
                 </div>
-              </div>
+                <div>
+                  <label htmlFor="urlName">URL Name</label>
+                  <Field name="urlName" placeholder="URL Name" />
+                  <ErrorMessage name="urlName" component="div" />
+                </div>
+                <div>
+                  <label htmlFor="privateBoard">Private?</label>
+                  <Field name="privateBoard" type="checkbox" />
+                </div>
+                {values.privateBoard && (
+                  <div>
+                    <label htmlFor="password">Board Password</label>
+                    <Field name="password" placehold="Password" />
+                    <ErrorMessage name="password" component="div" />
+                    <Note>
+                      This password will need to be provided by users who wish
+                      to join this board.
+                    </Note>
+                  </div>
+                )}
+                <div>
+                  <label htmlFor="userDisplayName">Your Display Name</label>
+                  <Field
+                    name="userDisplayName"
+                    placeholder="User Display Name"
+                  />
+                  <ErrorMessage name="userDisplayName" component="div" />
+                  <Note>This will be your username on the board</Note>
+                </div>
+                <div>
+                  <Button type="submit">Create</Button>
+                </div>
+              </Form>
             )}
-            <div>
-              Your Display Name
-              <input
-                type="text"
-                onChange={e => setUserDisplayName(e.target.value)}
-                value={userDisplayName}
-              />
-              <div>This will be your username on the board</div>
-            </div>
-            <input
-              type="submit"
-              value="Create"
-              onClick={() =>
-                createBoard({
-                  displayName,
-                  urlName,
-                  privateBoard,
-                  userDisplayName,
-                  password,
-                })
-              }
-            />
-            <Button onClick={close}>Close</Button>
-          </div>
+          </Formik>
         )
       }
-    </Popup>
+    </ModalPopup>
   );
 };
 

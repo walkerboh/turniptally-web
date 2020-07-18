@@ -7,6 +7,7 @@ import {
   tap,
   switchMapTo,
   mergeMap,
+  filter,
 } from "rxjs/operators";
 import {
   LOGIN,
@@ -35,9 +36,15 @@ import {
   SEND_PASSWORD_RESET_EMAIL,
   sendPasswordResetEmailSuccessAction,
   sendPasswordResetEmailErrorAction,
+  FETCH_PASSWORD_RESET_STATUS,
+  fetchPasswordResetStatusSuccessAction,
+  fetchPasswordResetStatusErrorAction,
+  SEND_PASSWORD_RESET,
+  sendPasswordResetSuccessAction,
+  sendPasswordResetErrorAction,
 } from "actions/users.actions";
 
-export const loginEpic = (action$, _, { ajax, config }) =>
+export const loginEpic = (action$, _, { ajax, config, push }) =>
   action$.pipe(
     ofType(LOGIN),
     switchMap(({ payload }) => {
@@ -49,10 +56,10 @@ export const loginEpic = (action$, _, { ajax, config }) =>
           "Content-Type": "application/json",
         },
       }).pipe(
-        map(({ response }) => {
+        mergeMap(({ response }) => {
           localStorage.setItem("user", JSON.stringify(response));
           localStorage.setItem("token", response.token);
-          return loginSuccessAction(response);
+          return of(loginSuccessAction(response), push("/"));
         }),
         catchError(err => of(loginErrorAction(err)))
       );
@@ -191,7 +198,6 @@ export const fetchUserWeekDetailsEpic = (action$, _, { ajax, config }) =>
 export const sendPasswordResetEmailEpic = (action$, _, { ajax, config }) =>
   action$.pipe(
     ofType(SEND_PASSWORD_RESET_EMAIL),
-    tap(() => console.log("ahhhh")),
     switchMap(({ payload }) => {
       return ajax({
         url: `${config.API_URL}/users/passwordResetEmail`,
@@ -203,6 +209,39 @@ export const sendPasswordResetEmailEpic = (action$, _, { ajax, config }) =>
       }).pipe(
         map(() => sendPasswordResetEmailSuccessAction()),
         catchError(() => of(sendPasswordResetEmailErrorAction()))
+      );
+    })
+  );
+
+export const fetchPasswordResetStatusEpic = (action$, _, { ajax, config }) =>
+  action$.pipe(
+    ofType(FETCH_PASSWORD_RESET_STATUS),
+    filter(({ payload: { key } }) => key && key !== ""),
+    switchMap(({ payload: { key } }) => {
+      return ajax({
+        url: `${config.API_URL}/users/passwordReset/${key}`,
+        method: "GET",
+      }).pipe(
+        map(() => fetchPasswordResetStatusSuccessAction()),
+        catchError(() => of(fetchPasswordResetStatusErrorAction()))
+      );
+    })
+  );
+
+export const sendPasswordResetEpic = (action$, _, { ajax, config }) =>
+  action$.pipe(
+    ofType(SEND_PASSWORD_RESET),
+    switchMap(({ payload }) => {
+      return ajax({
+        url: `${config.API_URL}/users/passwordReset`,
+        method: "POST",
+        body: payload,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).pipe(
+        map(() => sendPasswordResetSuccessAction()),
+        catchError(err => of(sendPasswordResetErrorAction(err)))
       );
     })
   );

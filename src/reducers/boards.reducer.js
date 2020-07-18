@@ -155,7 +155,7 @@ export const boards = (state = initialState, action) => {
         ...state,
         create: {
           inProgress: false,
-          error: action.payload,
+          error: action.payload.response,
         },
       };
     }

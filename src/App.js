@@ -8,6 +8,7 @@ import "App.css";
 import { withRouter, Switch, Route } from "react-router-dom";
 import { connect } from "react-redux";
 import Button from "components/common/Button";
+import ResetPassword from "components/user/ResetPassword";
 
 const Site = styled.div`
   display: flex;
@@ -55,24 +56,31 @@ const App = ({ user }) => {
       <Site>
         <div>
           <Header />
-          {user.loggedIn ? (
-            <>
-              <Switch>
-                <Route path="/board/:boardName">
-                  <BoardSelector />
-                  <Board />
-                </Route>
-                <Route path="/">
-                  <Profile />
-                </Route>
-              </Switch>
-            </>
-          ) : (
-            <div>
-              You must log in to view or create a board. Please log in or
-              register your account.
-            </div>
-          )}
+          <Switch>
+            <Route path="/resetPassword">
+              <ResetPassword />
+            </Route>
+            <Route>
+              {user.loggedIn ? (
+                <>
+                  <Switch>
+                    <Route path="/board/:boardName">
+                      <BoardSelector />
+                      <Board />
+                    </Route>
+                    <Route path="/">
+                      <Profile />
+                    </Route>
+                  </Switch>
+                </>
+              ) : (
+                <div>
+                  You must log in to view or create a board. Please log in or
+                  register your account.
+                </div>
+              )}
+            </Route>
+          </Switch>
         </div>
       </Site>
       {!showCookie && (
